@@ -15,7 +15,6 @@ Feature: Check files in a WordPress install
     Then STDOUT should be a table containing rows:
       | name          | status    | message                                                       |
       | file-eval     | success   | All 'php' files passed check for 'eval\(.*base64_decode\(.*'. |
-    And the return code should be 0
 
     Given a wp-content/mu-plugins/exploited.php file:
       """
@@ -23,10 +22,14 @@ Feature: Check files in a WordPress install
       eval( base64_decode( $_POST ) );
       """
 
-    When I run `wp doctor check file-eval`
+    When I try `wp doctor check file-eval`
     Then STDOUT should be a table containing rows:
       | name          | status    | message                                                      |
       | file-eval     | error     | 1 'php' file failed check for 'eval\(.*base64_decode\(.*'.   |
+    And STDERR should be:
+      """
+      Error: 1 check reports 'error'.
+      """
     And the return code should be 1
 
   Scenario: Check for the use of sessions
@@ -45,7 +48,6 @@ Feature: Check files in a WordPress install
       """
       [{"name":"file-sessions","status":"success","message":"All 'php' files passed check for '.*(session_start|\\$_SESSION).*'."}]
       """
-    And the return code should be 0
 
     Given a wp-content/mu-plugins/sessions1.php file:
       """
@@ -59,10 +61,13 @@ Feature: Check files in a WordPress install
       $_SESSION['foo'] = bar;
       """
 
-    When I run `wp doctor check file-sessions --config=config.yml --format=json`
+    When I try `wp doctor check file-sessions --config=config.yml --format=json`
     Then STDOUT should be JSON containing:
       """
       [{"name":"file-sessions","status":"error","message":"2 'php' files failed check for '.*(session_start|\\$_SESSION).*'."}]
+      """
+    And STDERR should be:
+      """
       """
     And the return code should be 1
 
@@ -87,7 +92,6 @@ Feature: Check files in a WordPress install
       """
       [{"name":"file-server-name-wp-config","status":"success","message":"All 'php' files passed check for 'define\\(.+WP_(HOME|SITEURL).+\\$_SERVER.+SERVER_NAME'."}]
       """
-    And the return code should be 0
 
     Given a prepend-siteurl.php file:
       """
@@ -107,10 +111,13 @@ Feature: Check files in a WordPress install
       @define( 'WP_SITEURL', $_SERVER['SERVER_NAME'] );
       """
 
-    When I run `wp doctor check file-server-name-wp-config --config=config.yml --format=json`
+    When I try `wp doctor check file-server-name-wp-config --config=config.yml --format=json`
     Then STDOUT should be JSON containing:
       """
       [{"name":"file-server-name-wp-config","status":"error","message":"1 'php' file failed check for 'define\\(.+WP_(HOME|SITEURL).+\\$_SERVER.+SERVER_NAME'."}]
+      """
+    And STDERR should be:
+      """
       """
     And the return code should be 1
 
@@ -126,10 +133,13 @@ Feature: Check files in a WordPress install
           exists: true
       """
 
-    When I run `wp doctor check file-content-exist --config=config.yml --format=json`
+    When I try `wp doctor check file-content-exist --config=config.yml --format=json`
     Then STDOUT should be JSON containing:
       """
       [{"name":"file-content-exist","status":"error","message":"0 'php' files passed check for '.*wp-doctor-exists-test.*'."}]
+      """
+    And STDERR should be:
+      """
       """
     And the return code should be 1
 
@@ -144,4 +154,3 @@ Feature: Check files in a WordPress install
       """
       [{"name":"file-content-exist","status":"success","message":"1 'php' file passed check for '.*wp-doctor-exists-test.*'."}]
       """
-    And the return code should be 0

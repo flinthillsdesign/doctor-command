@@ -13,21 +13,18 @@ Feature: Basic check usage
       """
       Success: All {CHECK_COUNT} checks report 'success'.
       """
-    And the return code should be 0
 
     When I run `wp doctor check plugin-deactivated --spotlight`
     Then STDOUT should be:
       """
       Success: The check reports 'success'.
       """
-    And the return code should be 0
 
     When I run `wp doctor check --all --spotlight --format=json`
     Then STDOUT should be:
       """
       []
       """
-    And the return code should be 0
 
   Scenario: Error when no checks nor --all are provided
     Given a WP install
