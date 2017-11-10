@@ -15,6 +15,7 @@ Feature: Check files in a WordPress install
     Then STDOUT should be a table containing rows:
       | name          | status    | message                                                       |
       | file-eval     | success   | All 'php' files passed check for 'eval\(.*base64_decode\(.*'. |
+    And the return code should be 0
 
     Given a wp-content/mu-plugins/exploited.php file:
       """
@@ -26,6 +27,7 @@ Feature: Check files in a WordPress install
     Then STDOUT should be a table containing rows:
       | name          | status    | message                                                      |
       | file-eval     | error     | 1 'php' file failed check for 'eval\(.*base64_decode\(.*'.   |
+    And the return code should be 1
 
   Scenario: Check for the use of sessions
     Given a WP install
@@ -43,6 +45,7 @@ Feature: Check files in a WordPress install
       """
       [{"name":"file-sessions","status":"success","message":"All 'php' files passed check for '.*(session_start|\\$_SESSION).*'."}]
       """
+    And the return code should be 0
 
     Given a wp-content/mu-plugins/sessions1.php file:
       """
@@ -61,6 +64,7 @@ Feature: Check files in a WordPress install
       """
       [{"name":"file-sessions","status":"error","message":"2 'php' files failed check for '.*(session_start|\\$_SESSION).*'."}]
       """
+    And the return code should be 1
 
   Scenario: Check for use of $_SERVER['SERVER_NAME'] in wp-config.php
     Given a WP install
@@ -83,6 +87,7 @@ Feature: Check files in a WordPress install
       """
       [{"name":"file-server-name-wp-config","status":"success","message":"All 'php' files passed check for 'define\\(.+WP_(HOME|SITEURL).+\\$_SERVER.+SERVER_NAME'."}]
       """
+    And the return code should be 0
 
     Given a prepend-siteurl.php file:
       """
@@ -107,6 +112,7 @@ Feature: Check files in a WordPress install
       """
       [{"name":"file-server-name-wp-config","status":"error","message":"1 'php' file failed check for 'define\\(.+WP_(HOME|SITEURL).+\\$_SERVER.+SERVER_NAME'."}]
       """
+    And the return code should be 1
 
   Scenario: Check for the successful use of the exist flag
     Given a WP install
@@ -125,6 +131,7 @@ Feature: Check files in a WordPress install
       """
       [{"name":"file-content-exist","status":"error","message":"0 'php' files passed check for '.*wp-doctor-exists-test.*'."}]
       """
+    And the return code should be 1
 
     Given a wp-content/mu-plugins/wp-doctor-exist-test.php file:
       """
@@ -137,3 +144,4 @@ Feature: Check files in a WordPress install
       """
       [{"name":"file-content-exist","status":"success","message":"1 'php' file passed check for '.*wp-doctor-exists-test.*'."}]
       """
+    And the return code should be 0

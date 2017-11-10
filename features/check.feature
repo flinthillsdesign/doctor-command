@@ -20,13 +20,14 @@ Feature: Basic check usage
       """
       Success: The check reports 'success'.
       """
-    And the return code should be 1
+    And the return code should be 0
 
     When I run `wp doctor check --all --spotlight --format=json`
     Then STDOUT should be:
       """
       []
       """
+    And the return code should be 0
 
   Scenario: Error when no checks nor --all are provided
     Given a WP install
@@ -36,6 +37,7 @@ Feature: Basic check usage
       """
       Error: Please specify one or more checks, or use --all.
       """
+    And the return code should be 1
 
   Scenario: Error when an invalid check is provided.
     Given a WP install
@@ -48,18 +50,21 @@ Feature: Basic check usage
       """
       Error: Invalid check.
       """
+    And the return code should be 1
 
     When I try `wp doctor check invalid-check invalid-check2`
     Then STDERR should be:
       """
       Error: Invalid checks.
       """
+    And the return code should be 1
 
     When I try `wp doctor check --all --config=config.yml`
     Then STDERR should be:
       """
       Error: No checks registered.
       """
+    And the return code should be 1
 
   Scenario: List all default checks
     Given a WP install
