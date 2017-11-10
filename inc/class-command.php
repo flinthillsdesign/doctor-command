@@ -192,12 +192,13 @@ class Command {
 			return 'error' === $check['status'];
 		});
 		if ( ! empty( $results_with_error ) ) {
-			$message = NULL;
 			if ( 'table' === $assoc_args['format'] ) {
 				$check_count = count( $results_with_error );
 				$message = 1 === $check_count ? "1 check reports 'error'." : "${check_count} checks report 'error'.";
+				WP_CLI::error( $message );
+			} else {
+				exit( 1 );
 			}
-			WP_CLI::error( $message );
 		}
 	}
 
