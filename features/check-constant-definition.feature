@@ -21,11 +21,13 @@ Feature: Check the values of defined constants
     Then STDOUT should be a table containing rows:
       | name                       | status  | message                                    |
       | constant-wp-debug-falsy    | success | Constant 'WP_DEBUG' is defined falsy.      |
+    And the return code should be 0
 
     When I run `wp doctor check constant-wp-debug-falsy --require=wp-debug-true.php`
     Then STDOUT should be a table containing rows:
       | name                       | status  | message                                    |
       | constant-wp-debug-falsy    | error   | Constant 'WP_DEBUG' is defined 'true' but expected to be falsy.  |
+    And the return code should be 1
 
   Scenario: SAVEQUERIES is defined to falsy
     Given a WP install
@@ -44,16 +46,19 @@ Feature: Check the values of defined constants
     Then STDOUT should be a table containing rows:
       | name                        | status  | message                                          |
       | constant-savequeries-falsy  | success | Constant 'SAVEQUERIES' is undefined.             |
+    And the return code should be 0
 
     When I run `wp doctor check constant-savequeries-falsy --require=savequeries-false.php`
     Then STDOUT should be a table containing rows:
       | name                        | status  | message                                          |
       | constant-savequeries-falsy  | success | Constant 'SAVEQUERIES' is defined falsy.         |
+    And the return code should be 0
 
     When I run `wp doctor check constant-savequeries-falsy --require=savequeries-true.php`
     Then STDOUT should be a table containing rows:
       | name                        | status  | message                                                    |
       | constant-savequeries-falsy  | error   | Constant 'SAVEQUERIES' is defined 'true' but expected to be falsy. |
+    And the return code should be 1
 
   Scenario: Expected constant is defined
     Given a WP install
@@ -70,6 +75,7 @@ Feature: Check the values of defined constants
     Then STDOUT should be a table containing rows:
       | name                     | status    | message                               |
       | constant-db-host-defined | success   | Constant 'DB_HOST' is defined.        |
+    And the return code should be 0
 
   Scenario: Expected constant is missing
     Given a WP install
@@ -86,6 +92,7 @@ Feature: Check the values of defined constants
     Then STDOUT should be a table containing rows:
       | name                 | status  | message                                                   |
       | constant-foobar-true | error   | Constant 'FOOBAR' is undefined but expected to be 'true'. |
+    And the return code should be 1
 
   Scenario: Expected constant is defined as the correct value
     Given a WP install
@@ -107,3 +114,4 @@ Feature: Check the values of defined constants
     Then STDOUT should be a table containing rows:
       | name                 | status  | message                               |
       | constant-foobar-true | success | Constant 'FOOBAR' is defined 'true'.  |
+    And the return code should be 0
