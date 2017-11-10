@@ -26,10 +26,6 @@ Feature: Check the values of defined constants
     Then STDOUT should be a table containing rows:
       | name                       | status  | message                                    |
       | constant-wp-debug-falsy    | error   | Constant 'WP_DEBUG' is defined 'true' but expected to be falsy.  |
-    And STDERR should be:
-      """
-      Error: 1 check reports 'error'.
-      """
     And the return code should be 1
 
   Scenario: SAVEQUERIES is defined to falsy
@@ -59,10 +55,6 @@ Feature: Check the values of defined constants
     Then STDOUT should be a table containing rows:
       | name                        | status  | message                                                    |
       | constant-savequeries-falsy  | error   | Constant 'SAVEQUERIES' is defined 'true' but expected to be falsy. |
-    And STDERR should be:
-      """
-      Error: 1 check reports 'error'.
-      """
     And the return code should be 1
 
   Scenario: Expected constant is defined
@@ -96,10 +88,6 @@ Feature: Check the values of defined constants
     Then STDOUT should be a table containing rows:
       | name                 | status  | message                                                   |
       | constant-foobar-true | error   | Constant 'FOOBAR' is undefined but expected to be 'true'. |
-    And STDERR should be:
-      """
-      Error: 1 check reports 'error'.
-      """
     And the return code should be 1
 
   Scenario: Expected constant is defined as the correct value
