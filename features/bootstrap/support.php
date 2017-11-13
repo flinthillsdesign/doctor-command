@@ -48,7 +48,6 @@ function checkString( $output, $expected, $action, $message = false ) {
 	if ( !$r ) {
 		if ( false === $message )
 			$message = $output;
-		$message .= "\n\nOutput:\n$output\n\nExpected:\n$expected";
 		throw new Exception( $message );
 	}
 }
@@ -64,7 +63,7 @@ function compareTables( $expected_rows, $actual_rows, $output ) {
 
 	$missing_rows = array_diff( $expected_rows, $actual_rows );
 	if ( !empty( $missing_rows ) ) {
-		throw new \Exception( $missing_rows );
+		throw new \Exception( print_r($missing_rows, true) );
 	}
 }
 
