@@ -9,6 +9,11 @@ use WP_CLI;
  */
 class Plugin_Update extends Plugin {
 
+	/**
+	 * Status that is set when this check fails
+	 *
+	 * @var string
+	 */
 	protected $status_for_failure = 'warning';
 
 	public function run() {

@@ -18,6 +18,13 @@ class PHP_In_Upload extends Check {
 	 */
 	protected $php_files_array = array();
 
+	/**
+	 * Status that is set when this check fails
+	 *
+	 * @var string
+	 */
+	protected $status_for_failure = 'warning';
+
 	public function run() {
 
 		// Path to the uploads folder.
@@ -32,7 +39,7 @@ class PHP_In_Upload extends Check {
 		}
 
 		if ( ! empty( $this->php_files_array ) ) {
-			$this->set_status( 'warning' );
+			$this->set_status( $this->status_for_failure );
 			$this->set_message( 'PHP files detected in the Uploads folder.' );
 		} else {
 			$this->set_status( 'success' );
