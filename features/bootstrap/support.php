@@ -48,6 +48,7 @@ function checkString( $output, $expected, $action, $message = false ) {
 	if ( !$r ) {
 		if ( false === $message )
 			$message = $output;
+		$message .= "\n\nOutput:\n$output\n\nExpected:\n$expected"
 		throw new Exception( $message );
 	}
 }
@@ -191,4 +192,3 @@ function checkThatYamlStringContainsYamlString( $actualYaml, $expectedYaml ) {
 
 	return compareContents( $expectedValue, $actualValue );
 }
-
