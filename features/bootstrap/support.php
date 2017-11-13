@@ -64,7 +64,7 @@ function compareTables( $expected_rows, $actual_rows, $output ) {
 
 	$missing_rows = array_diff( $expected_rows, $actual_rows );
 	if ( !empty( $missing_rows ) ) {
-		throw new \Exception( $output );
+		throw new \Exception( $missing_rows );
 	}
 }
 
