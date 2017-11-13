@@ -39,4 +39,4 @@ Feature: Check whether themes are up to date
     When I run `wp doctor check theme-update`
     Then STDOUT should be a table containing rows:
       | name          | status  | message                                 |
-      | theme-update  | error | 1 theme has an update available.       |
+      | theme-update  | error   | 1 theme has an update available.        |
