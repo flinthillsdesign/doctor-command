@@ -38,7 +38,7 @@ class Validate_Mime extends Check {
 			$file_path      = $file->getPathname();
 			$file_extension = $file->getExtension();
 			$finfo = finfo_open( FILEINFO_MIME_TYPE ); // return mime type ala mimetype extension
-			$file_mime_type = finfo_file( $finfo, $file_path )
+			$file_mime_type = finfo_file( $finfo, $file_path );
 			finfo_close( $finfo );
 
 			if ( 'directory' !== $file_mime_type ) {
