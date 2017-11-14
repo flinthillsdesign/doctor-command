@@ -26,7 +26,7 @@ Feature: Detect files having extensions with incorrect MIME-types
     <?php malicious_code();
     """
 
-    When I run `wp doctor check validate-mime`
+    When I run `wp doctor check validate-mime --config=config.yml`
     Then STDOUT should be a table containing rows:
       | name          | status  | message                                  |
       | validate-mime | error | Files detected with different MIME type. |

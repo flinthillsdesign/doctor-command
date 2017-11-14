@@ -26,7 +26,7 @@ Feature: Check for presence of .php files in the uploads folder
       <?php some_malicious_code(); ?>
       """
 
-    When I run `wp doctor check php-in-upload`
+    When I run `wp doctor check php-in-upload --config=config.yml`
     Then STDOUT should be a table containing rows:
       | name          | status  | message                                   |
       | php-in-upload | error | PHP files detected in the Uploads folder. |

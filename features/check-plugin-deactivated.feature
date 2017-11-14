@@ -38,7 +38,7 @@ Feature: Check whether a high percentage of plugins are deactivated
       """
     And I run `wp plugin install user-switching rewrite-rules-inspector`
 
-    When I run `wp doctor check plugin-deactivated`
+    When I run `wp doctor check plugin-deactivated --config=config.yml`
     Then STDOUT should be a table containing rows:
       | name               | status  | message                                          |
       | plugin-deactivated | error | Greater than 40 percent of plugins are deactivated. |
