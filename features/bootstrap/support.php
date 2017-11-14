@@ -63,7 +63,7 @@ function compareTables( $expected_rows, $actual_rows, $output ) {
 
 	$missing_rows = array_diff( $expected_rows, $actual_rows );
 	if ( !empty( $missing_rows ) ) {
-		throw new \Exception( print_r($missing_rows, true) );
+		throw new \Exception( $output );
 	}
 }
 
@@ -191,3 +191,4 @@ function checkThatYamlStringContainsYamlString( $actualYaml, $expectedYaml ) {
 
 	return compareContents( $expectedValue, $actualValue );
 }
+
