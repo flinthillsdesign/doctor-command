@@ -35,6 +35,25 @@ Feature: Check whether plugins are up to date
       | name          | status  | message                                 | recommendation  |
       | plugin-update | warning | 1 plugin has an update available.       | Update the akismet plugin. |
 
+  Scenario: One plugin has an update available with data field
+    Given a WP install
+    And I run `wp plugin install akismet --version=3.1.10 --force`
+
+    When I run `wp doctor check --fields=name,status,message,data plugin-update`
+    Then STDOUT should be a table containing rows:
+      | name          | status  | message                                 | data  |
+      | plugin-update | warning | 1 plugin has an update available.       | [{"name":"akismet","status":"inactive","update":"available","version":"3.1.10"}] |
+
+  Scenario: One plugin has an update available with data field and JSON format
+    Given a WP install
+    And I run `wp plugin install akismet --version=3.1.10 --force`
+
+    When I run `wp doctor check --fields=name,status,message,data plugin-update --format=json`
+    Then STDOUT should be JSON containing:
+      """
+      [{"name":"plugin-update","status":"warning","message":"1 plugin has an update available.","data":[{"name":"akismet","status":"inactive","update":"available","version":"3.1.10"}]}]
+      """
+
   Scenario: One plugin has an update available and the failure_status is 'error'
     Given a WP install
     And a config.yml file:

@@ -18,14 +18,17 @@ class Plugin_Update extends Plugin {
 
 	public function run() {
 		$plugins = self::get_plugins();
-		$outdated_plugin_names = array();
-		foreach( $plugins as $plugin ) {
-			if ( 'available' === $plugin['update'] ) {
-				$outdated_plugin_names[] = $plugin['name'];
-			}
-		}
-		$update_count = count( $outdated_plugin_names );
-		$outdated_plugin_names = implode( $outdated_plugin_names, ', ' );
+
+		$outdated_plugins = array_filter($plugins, function($plugin) {
+			return 'available' === $plugin['update'];
+		});
+		$update_count = count( $outdated_plugins );
+		$outdated_plugin_names = implode(
+			array_map(function($plugin) { return $plugin['name']; }, $outdated_plugins),
+			', '
+		);
+
+		$this->set_data( $outdated_plugins );
 
 		if ( 1 === $update_count ) {
 			$this->set_status( $this->status_for_failure );
