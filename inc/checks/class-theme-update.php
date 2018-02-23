@@ -21,12 +21,12 @@ class Theme_Update extends Check {
 		WP_CLI::run_command( array( 'theme', 'list' ), array( 'format' => 'json' ) );
 		$ret = ob_get_clean();
 		$themes = ! empty( $ret ) ? json_decode( $ret, true ) : array();
-		$update_count = 0;
-		foreach( $themes as $theme ) {
-			if ( 'available' === $theme['update'] ) {
-				$update_count++;
-			}
-		}
+		$outdated_themes = array_filter($themes, function($theme) {
+			return 'available' === $theme['update'];
+		});
+		$update_count = count( $outdated_themes );
+
+		$this->set_data( $outdated_themes );
 
 		if ( 1 === $update_count ) {
 			$this->set_status( $this->status_for_failure );
