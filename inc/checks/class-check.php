@@ -37,6 +37,13 @@ abstract class Check {
 	protected $_recommendation = '';
 
 	/**
+	 * Additional relevant data for this check.
+	 *
+	 * @var string
+	 */
+	protected $_data = array();
+
+	/**
 	 * Initialize the check.
 	 */
 	public function __construct( $options = array() ) {
@@ -97,6 +104,15 @@ abstract class Check {
 	}
 
 	/**
+	 * Set the data of the check.
+	 *
+	 * @param array $data
+	 */
+	protected function set_data( $data ) {
+		$this->_data = $data;
+	}
+
+	/**
 	 * Run the check.
 	 *
 	 * Because each check checks for something different, this method must be
@@ -114,6 +130,7 @@ abstract class Check {
 			'status'         => $this->_status,
 			'message'        => $this->_message,
 			'recommendation' => $this->_recommendation,
+			'data'           => $this->_data,
 		);
 	}
 
