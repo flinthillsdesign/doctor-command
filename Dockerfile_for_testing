@@ -28,7 +28,11 @@ ENV PATH="/repo/vendor/bin:${PATH}"
 
 COPY . /repo
 
-RUN service mysql start && bash bin/install-package-tests.sh
+RUN mkdir -p /var/lib/mysql && chown -R mysql:mysql /var/lib/mysql
+# RUN service mysql start
+# RUN bash bin/install-package-tests.sh
 
 RUN useradd -u 9000 app
-CMD service mysql start && su - app -c "export PATH=/repo/vendor/bin:${PATH} && cd /repo && bash bin/test.sh"
+CMD service mysql start && \
+    bash bin/install-package-tests.sh && \
+    su - app -c "export PATH=/repo/vendor/bin:${PATH} && cd /repo && bash bin/test.sh"

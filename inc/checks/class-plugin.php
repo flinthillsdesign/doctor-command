@@ -15,6 +15,7 @@ abstract class Plugin extends Check {
 		}
 
 		ob_start();
+		// TODO any way we can get a fields=ALL? for data field
 		WP_CLI::run_command( array( 'plugin', 'list' ), array( 'format' => 'json' ) );
 		$ret = ob_get_clean();
 		self::$plugins = ! empty( $ret ) ? json_decode( $ret, true ) : array();
